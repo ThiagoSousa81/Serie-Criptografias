@@ -1,7 +1,7 @@
-<h1 align=center>Serie Criptografias</h1>
+<h1 align=center>Série Criptografias</h1>
 Uma abordagem geral para compreensão do assunto
 
-### Acompanhe a série no [You-Tube](https://www.youtube.com/watch?v=XAWG-Wnwg2w&list=PLo7vhVXZt9nxuVBS7tu9hu78duaQ6BSKi&pp=gAQBiAQB)
+### Acompanhe esta série no [You-Tube](https://www.youtube.com/watch?v=XAWG-Wnwg2w&list=PLo7vhVXZt9nxuVBS7tu9hu78duaQ6BSKi&pp=gAQBiAQB)
 
 ## Slides
 
