@@ -1,5 +1,5 @@
 # Função para gerar uma chave DES
-function Generate-DESKey {
+function GenerateDESKey {
     $key = New-Object byte[] 8
     [System.Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($key)
     return $key
@@ -11,15 +11,18 @@ function DES-Encrypt {
         [string]$message,
         [byte[]]$key
     )
-    
+    # Transforma o texto em Bytes
+    $messageBytes = [System.Text.Encoding]::UTF8.GetBytes($message)
     $des = [System.Security.Cryptography.DESCryptoServiceProvider]::Create()
     $des.Key = $key
     $des.IV = $key # Usando a mesma chave como IV para simplicidade (não recomendado para produção)
 
-    $encryptor = $des.CreateEncryptor()
-    $messageBytes = [System.Text.Encoding]::UTF8.GetBytes($message)
+    $encryptor = $des.CreateEncryptor() # Cria um encriptador usando o CSP    
+
+    # Criptografa os dados
     $encryptedBytes = $encryptor.TransformFinalBlock($messageBytes, 0, $messageBytes.Length)
     
+    # Devolve o resultado dos Bytes em Base64
     return [Convert]::ToBase64String($encryptedBytes)
 }
 
@@ -29,21 +32,27 @@ function DES-Decrypt {
         [string]$encryptedMessage,
         [byte[]]$key
     )
+    # Retorna os dados encriptados do Base64
+    $encryptedBytes = [Convert]::FromBase64String($encryptedMessage)
     
+    # Cria o nosso CSP
     $des = [System.Security.Cryptography.DESCryptoServiceProvider]::Create()
     $des.Key = $key
     $des.IV = $key # Usando a mesma chave como IV para simplicidade (não recomendado para produção)
 
+    # Cria um decriptador usando o CSP
     $decryptor = $des.CreateDecryptor()
-    $encryptedBytes = [Convert]::FromBase64String($encryptedMessage)
+
+    # Decifra os dados    
     $decryptedBytes = $decryptor.TransformFinalBlock($encryptedBytes, 0, $encryptedBytes.Length)
     
+    # Devolve o resultado dos Bytes em UTF-8
     return [System.Text.Encoding]::UTF8.GetString($decryptedBytes)
 }
 
 # Exemplo de uso
 $message = "HELLO"
-$key = Generate-DESKey
+$key = GenerateDESKey
 $encrypted_message = DES-Encrypt -message $message -key $key
 $decrypted_message = DES-Decrypt -encryptedMessage $encrypted_message -key $key
 
