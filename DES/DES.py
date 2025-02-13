@@ -18,30 +18,6 @@ def generate_des_key():
 # Função para gerar um IV
 def generate_iv():
     return get_random_bytes(8)  # Gera um IV de 8 bytes
-'''
-# Função para criptografar a mensagem usando DES
-def des_encrypt(message, key, iv):
-    des = DES.new(key, DES.MODE_CBC, iv)  # Cria um objeto DES com modo CBC
-    # Preenche a mensagem para que seu tamanho seja múltiplo de 8
-    padding_length = 8 - len(message) % 8
-    padded_message = message + (chr(padding_length) * padding_length)
-    encrypted_bytes = des.encrypt(padded_message.encode('utf-8'))
-    return base64.b64encode(iv + encrypted_bytes).decode('utf-8')  # Retorna IV + mensagem criptografada em Base64
-
-# Função para descriptografar a mensagem usando DES
-def des_decrypt(encrypted_message, key):
-    encrypted_bytes = base64.b64decode(encrypted_message)
-    iv = encrypted_bytes[:8]  # Extrai o IV
-    encrypted_bytes = encrypted_bytes[8:]  # O restante é a mensagem criptografada
-
-    des = DES.new(key, DES.MODE_CBC, iv)  # Cria um objeto DES com modo CBC
-    decrypted_bytes = des.decrypt(encrypted_bytes)
-    # Remove o preenchimento
-    padding_length = decrypted_bytes[-1]
-    return decrypted_bytes[:-padding_length].decode('utf-8')
-    
-'''
-
 
 # Função para criptografar a mensagem usando DES
 def des_encrypt(message, key, iv):
@@ -67,8 +43,8 @@ key = generate_des_key()
 iv = generate_iv()
 
 # Definindo uma chave e um IV fixos para testes
-key = bytes.fromhex('7E1C096E330A5D06')  # Chave fixa
-iv = bytes.fromhex('EF6F408059B616CE')    # IV fixo
+# key = bytes.fromhex('7E1C096E330A5D06')  # Chave fixa
+# iv = bytes.fromhex('EF6F408059B616CE')    # IV fixo
 
 encrypted_message = des_encrypt(message, key, iv)
 decrypted_message = des_decrypt(encrypted_message, key, iv)
