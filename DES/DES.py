@@ -49,7 +49,7 @@ def des_encrypt(message, key, iv):
     # Aplica o preenchimento PKCS#7
     padded_message = Padding.pad(message.encode('utf-8'), DES.block_size)
     encrypted_bytes = des.encrypt(padded_message)
-    return base64.b64encode(iv + encrypted_bytes).decode('utf-8')  # Retorna IV + mensagem criptografada em Base64
+    return base64.b64encode(encrypted_bytes).decode('utf-8')  # retorna mensagem criptografada em Base64
 
 # Função para descriptografar a mensagem usando DES
 def des_decrypt(encrypted_message, key, iv):
