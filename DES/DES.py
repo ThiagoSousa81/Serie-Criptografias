@@ -48,7 +48,7 @@ encrypted_message = des_encrypt(message, key, iv)
 decrypted_message = des_decrypt(encrypted_message, key)
 
 print(f"Message: {message}")
-print(f"Key: {key.hex}")  # Exibe a chave em formato legível
-print(f"IV: {iv.hex}")    # Exibe o vetor em formato legível
+print(f"Key: {key.hex()}")  # Exibe a chave em formato legível
+print(f"IV: {iv.hex()}")    # Exibe o vetor em formato legível
 print(f"Encrypted: {encrypted_message}")
 print(f"Decrypted: {decrypted_message}")
