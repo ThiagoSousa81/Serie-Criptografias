@@ -44,6 +44,10 @@ message = "HELLO"
 key = generate_des_key()
 iv = generate_iv()
 
+# Definindo uma chave e um IV fixos para testes
+key = bytes.fromhex('7E1C096E330A5D06')  # Chave fixa
+iv = bytes.fromhex('EF6F408059B616CE')    # IV fixo
+
 encrypted_message = des_encrypt(message, key, iv)
 decrypted_message = des_decrypt(encrypted_message, key)
 
