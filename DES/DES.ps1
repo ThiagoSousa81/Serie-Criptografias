@@ -64,7 +64,7 @@ $encrypted_message = DES-Encrypt -message $message -key $key -IV $IV
 $decrypted_message = DES-Decrypt -encryptedMessage $encrypted_message -key $key -IV $IV
 
 Write-Output "Message: $message"
-Write-Output "Key: $([Text.Encoding]::UTF8.GetString($key))" # Exibe a chave em formato legível
-Write-Output "IV: $([Text.Encoding]::UTF8.GetString($IV))" # Exibe o vetor em formato legível
+Write-Output "Key: $([BitConverter]::ToString($key) -replace '-', '')" # Exibe a chave em formato legível
+Write-Output "IV: $([BitConverter]::ToString($IV) -replace '-', '')"   # Exibe o vetor em formato legível
 Write-Output "Encrypted: $encrypted_message"
 Write-Output "Decrypted: $decrypted_message"
