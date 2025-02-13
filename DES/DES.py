@@ -71,7 +71,7 @@ key = bytes.fromhex('7E1C096E330A5D06')  # Chave fixa
 iv = bytes.fromhex('EF6F408059B616CE')    # IV fixo
 
 encrypted_message = des_encrypt(message, key, iv)
-decrypted_message = des_decrypt(encrypted_message, key)
+decrypted_message = des_decrypt(encrypted_message, key, iv)
 
 print(f"Message: {message}")
 print(f"Key (HEX): {key.hex()}")  # Exibe a chave em formato legível
