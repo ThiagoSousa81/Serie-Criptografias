@@ -9,7 +9,7 @@ function GenerateDESParam {
 function DES-Encrypt {
     param (
         [string]$message,
-        [byte[]]$key
+        [byte[]]$key,
         [byte[]]$IV
     )
     # Transforma o texto em Bytes
@@ -33,7 +33,7 @@ function DES-Encrypt {
 function DES-Decrypt {
     param (
         [string]$encryptedMessage,
-        [byte[]]$key
+        [byte[]]$key,
         [byte[]]$IV
     )
     # Retorna os dados encriptados do Base64
