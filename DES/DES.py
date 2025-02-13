@@ -1,4 +1,5 @@
 from Crypto.Cipher import DES
+from Crypto.Util import Padding
 from Crypto.Random import get_random_bytes
 import base64
 
@@ -17,7 +18,7 @@ def generate_des_key():
 # Função para gerar um IV
 def generate_iv():
     return get_random_bytes(8)  # Gera um IV de 8 bytes
-
+'''
 # Função para criptografar a mensagem usando DES
 def des_encrypt(message, key, iv):
     des = DES.new(key, DES.MODE_CBC, iv)  # Cria um objeto DES com modo CBC
@@ -38,6 +39,27 @@ def des_decrypt(encrypted_message, key):
     # Remove o preenchimento
     padding_length = decrypted_bytes[-1]
     return decrypted_bytes[:-padding_length].decode('utf-8')
+    
+'''
+
+
+# Função para criptografar a mensagem usando DES
+def des_encrypt(message, key, iv):
+    des = DES.new(key, DES.MODE_CBC, iv)  # Cria um objeto DES com modo CBC
+    # Aplica o preenchimento PKCS#7
+    padded_message = Padding.pad(message.encode('utf-8'), DES.block_size)
+    encrypted_bytes = des.encrypt(padded_message)
+    return base64.b64encode(iv + encrypted_bytes).decode('utf-8')  # Retorna IV + mensagem criptografada em Base64
+
+# Função para descriptografar a mensagem usando DES
+def des_decrypt(encrypted_message, key, iv):
+    encrypted_bytes = base64.b64decode(encrypted_message)        
+
+    des = DES.new(key, DES.MODE_CBC, iv)  # Cria um objeto DES com modo CBC
+    decrypted_bytes = des.decrypt(encrypted_bytes)
+    # Remove o preenchimento
+    unpadded_message = Padding.unpad(decrypted_bytes, DES.block_size)
+    return unpadded_message.decode('utf-8')
 
 # Exemplo de uso
 message = "HELLO"

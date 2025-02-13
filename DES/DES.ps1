@@ -56,8 +56,8 @@ function DES-Decrypt {
 
 # Exemplo de uso
 $message = "HELLO"
-$key = GenerateDESParam
-$IV = GenerateDESParam
+#$key = GenerateDESParam
+#$IV = GenerateDESParam
 
 # Definindo uma chave e um IV fixos para testes
 $key = [byte[]](0x7E, 0x1C, 0x09, 0x6E, 0x33, 0x0A, 0x5D, 0x06)  # Chave fixa
