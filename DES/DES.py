@@ -4,11 +4,20 @@ import base64
 
 # Função para gerar uma chave DES
 def generate_des_key():
-    return get_random_bytes(8)  # Gera uma chave de 8 bytes
+    key = get_random_bytes(8)  # Gera uma chave de 8 bytes
+    # Ajusta a chave para incluir bits de paridade
+    key_with_parity = bytearray()
+    for byte in key:
+        # Calcula o bit de paridade
+        parity_bit = 1 if bin(byte).count('1') % 2 == 0 else 0
+        # Adiciona o byte com o bit de paridade
+        key_with_parity.append((byte & 0xFE) | parity_bit)  # Zera o último bit e adiciona o bit de paridade
+    return bytes(key_with_parity)
 
 # Função para criptografar a mensagem usando DES
 def des_encrypt(message, key):
     des = DES.new(key, DES.MODE_CBC, iv=key)  # Usando a mesma chave como IV para simplicidade (não recomendado para produção)
+
     # Preenche a mensagem para que seu tamanho seja múltiplo de 8
     padded_message = message + (8 - len(message) % 8) * chr(8 - len(message) % 8)
     encrypted_bytes = des.encrypt(padded_message.encode('utf-8'))
@@ -31,6 +40,6 @@ decrypted_message = des_decrypt(encrypted_message, key)
 
 print(f"Message: {message}")
 #print(f"Key: {key.hex()}")  # Exibe a chave em formato legível
-print(f"Key: {str(key)}")
+print(f"Key: {str(key)}") # Exibe os bytes como string
 print(f"Encrypted: {encrypted_message}")
 print(f"Decrypted: {decrypted_message}")
