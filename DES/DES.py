@@ -4,6 +4,7 @@ from Crypto.Random import get_random_bytes
 import base64
 
 # Função para gerar uma chave DES com verificação de paridade
+# Desnecessária pois a biblioteca pycryptodome já faz isso
 def generate_des_key():
     key = get_random_bytes(8)  # Gera uma chave de 8 bytes
     # Ajusta a chave para incluir bits de paridade
