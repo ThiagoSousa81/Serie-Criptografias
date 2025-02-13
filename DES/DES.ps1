@@ -1,5 +1,5 @@
 # Função para gerar uma chave DES
-function GenerateDESKey {
+function GenerateDESParam {
     $key = New-Object byte[] 8
     [System.Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($key)
     return $key
@@ -10,12 +10,15 @@ function DES-Encrypt {
     param (
         [string]$message,
         [byte[]]$key
+        [byte[]]$IV
     )
     # Transforma o texto em Bytes
     $messageBytes = [System.Text.Encoding]::UTF8.GetBytes($message)
+    # Cria o CSP
     $des = [System.Security.Cryptography.DESCryptoServiceProvider]::Create()
+    # Define chave e vetor
     $des.Key = $key
-    $des.IV = $key # Usando a mesma chave como IV para simplicidade (não recomendado para produção)
+    $des.IV = $IV
 
     $encryptor = $des.CreateEncryptor() # Cria um encriptador usando o CSP    
 
@@ -31,6 +34,7 @@ function DES-Decrypt {
     param (
         [string]$encryptedMessage,
         [byte[]]$key
+        [byte[]]$IV
     )
     # Retorna os dados encriptados do Base64
     $encryptedBytes = [Convert]::FromBase64String($encryptedMessage)
@@ -38,7 +42,7 @@ function DES-Decrypt {
     # Cria o nosso CSP
     $des = [System.Security.Cryptography.DESCryptoServiceProvider]::Create()
     $des.Key = $key
-    $des.IV = $key # Usando a mesma chave como IV para simplicidade (não recomendado para produção)
+    $des.IV = $IV
 
     # Cria um decriptador usando o CSP
     $decryptor = $des.CreateDecryptor()
@@ -52,11 +56,15 @@ function DES-Decrypt {
 
 # Exemplo de uso
 $message = "HELLO"
-$key = GenerateDESKey
-$encrypted_message = DES-Encrypt -message $message -key $key
-$decrypted_message = DES-Decrypt -encryptedMessage $encrypted_message -key $key
+$key = GenerateDESParam
+$IV = GenerateDESParam
+
+$encrypted_message = DES-Encrypt -message $message -key $key -IV $IV
+
+$decrypted_message = DES-Decrypt -encryptedMessage $encrypted_message -key $key -IV $IV
 
 Write-Output "Message: $message"
 Write-Output "Key: $([Text.Encoding]::UTF8.GetString($key))" # Exibe a chave em formato legível
+Write-Output "IV: $([Text.Encoding]::UTF8.GetString($IV))" # Exibe o vetor em formato legível
 Write-Output "Encrypted: $encrypted_message"
 Write-Output "Decrypted: $decrypted_message"
